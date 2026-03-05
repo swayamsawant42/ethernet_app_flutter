@@ -1,0 +1,394 @@
+{
+	"info": {
+		"_postman_id": "bb7dc611-9c30-43fc-a029-2f9b13ec5096",
+		"name": "Lead Management Routes - Postman Collection",
+		"description": "# Lead Management API Routes\n\nThis collection contains all Lead Management endpoints from `leadRoutes.js` (lines 102-253).\n\n## Base URL\n`http://localhost:3000/api/v1/leads`\n\n## Authentication\nMost endpoints require Bearer token authentication. Set your `accessToken` in the collection variables.\n\n## Valid Lead Status Values\n- OPEN\n- CONTACTED\n- QUALIFIED\n- UNQUALIFIED\n- ASSIGNED_TO_GIS\n- PENDING_WITH_REASON\n- CALL_BACK\n- SUSPEND_LEAD\n- NOT_CLOSED\n- CUSTOMER_DETAILS_CAPTURED\n- PENDING_PAYMENT\n- PAYMENT_COMPLETED\n- KYC_PENDING\n- KYC_COMPLETED\n\n## Valid Service Types\n- SME\n- BROADBAND\n- LEASEDLINE\n\n## Valid GIS Status Values\n- FEASIBLE\n- NOT_FEASIBLE\n- INCORRECT_LOCATION\n\n## Valid Optical Types\n- GPON\n- EPON\n- Media convertor\n\n## Setup Instructions\n1. Import this collection into Postman\n2. Set `baseUrl` variable: `http://localhost:3000/api/v1/leads`\n3. Set `accessToken` variable after login\n4. Set `unique_id` variable with a valid lead unique ID for testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49725847",
+		"_collection_link": "https://itechseed.postman.co/workspace/CRM~fbcef786-a0f1-4635-ad1f-035588fd05ba/collection/32688821-bb7dc611-9c30-43fc-a029-2f9b13ec5096?action=share&source=collection_link&creator=49725847"
+	},
+	"item": [
+		{
+			"name": "Lead Management",
+			"item": [
+				{
+					"name": "Create/Update Lead",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDgsImlhdCI6MTc2MzczMDI3OCwiZXhwIjoxNzY2MzIyMjc4fQ.pXykFc_pdlsR0pbkM5iWyZhjBkLsJ2coUuNRByxKcHQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Doe\",\n  \"phone_number\": \"9876543210\",\n  \"address\": \"123 Main Street, City, State\",\n  \"source\": \"Website\",\n  \"service_type\": \"BROADBAND\",\n  \"sales_executive\": 48,\n  \"status\": \"OPEN\",\n  \"partner_id\": 1,\n  \"former_isp\": \"Previous ISP Name\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "## Create or Update a Lead\n\n**Authentication:** Required ✅\n\n### Description\nCreates a new lead or updates an existing one if `id` is provided.\n\n### Request Body\n- `id` (optional): Integer - Lead ID for update\n- `name` (required): String - Lead name\n- `phone_number` (required): String - Phone number\n- `address` (required): String - Address\n- `source` (required): String - Lead source\n- `service_type` (required): Enum - One of: SME, BROADBAND, LEASEDLINE\n- `sales_executive` (optional): Integer - User ID of sales executive\n- `status` (optional): String - Lead status (must be valid lead status value)\n- `partner_id` (optional): Integer - Partner ID\n- `former_isp` (optional): String - Previous ISP name\n\n### Example Request\n```json\n{\n  \"name\": \"John Doe\",\n  \"phone_number\": \"9876543210\",\n  \"address\": \"123 Main Street, City, State\",\n  \"source\": \"Website\",\n  \"service_type\": \"BROADBAND\",\n  \"sales_executive\": 1,\n  \"status\": \"OPEN\",\n  \"partner_id\": 1,\n  \"former_isp\": \"Previous ISP Name\"\n}\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Leads",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "## Get All Leads\n\n**Authentication:** Not Required ❌\n\n### Description\nRetrieves a list of all leads.\n\n### Response\nReturns an array of lead objects with all lead information."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Lead by Unique ID",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/unique/:unique_id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"unique",
+								":unique_id"
+							],
+							"variable": [
+								{
+									"key": "unique_id",
+									"value": "{{unique_id}}",
+									"description": "Lead unique identifier"
+								}
+							]
+						},
+						"description": "## Get Lead by Unique ID\n\n**Authentication:** Not Required ❌\n\n### Description\nRetrieves a specific lead by its unique identifier.\n\n### Path Parameters\n- `unique_id` (required): String - The unique identifier of the lead\n\n### Example\n`/unique/LEAD-2024-001`"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Lead Status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDgsImlhdCI6MTc2MzczOTM2NCwiZXhwIjoxNzY2MzMxMzY0fQ.mDJHfRADHHgS0fSzEFHFTNh5BHHPJApCYMhnPT8y-50",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"ASSIGNED_TO_GIS\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/:unique_id/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								":unique_id",
+								"status"
+							],
+							"variable": [
+								{
+									"key": "unique_id",
+									"value": null
+								}
+							]
+						},
+						"description": "## Update Lead Status\n\n**Authentication:** Required ✅\n\n### Description\nUpdates the status of a lead identified by unique_id.\n\n### Path Parameters\n- `unique_id` (required): String - The unique identifier of the lead\n\n### Request Body\n- `status` (required): String - New status value (must be a valid lead status)\n\n### Valid Status Values\nOPEN, CONTACTED, QUALIFIED, UNQUALIFIED, ASSIGNED_TO_GIS, PENDING_WITH_REASON, CALL_BACK, SUSPEND_LEAD, NOT_CLOSED, CUSTOMER_DETAILS_CAPTURED, PENDING_PAYMENT, PAYMENT_COMPLETED, KYC_PENDING, KYC_COMPLETED\n\n### Example Request\n```json\n{\n  \"status\": \"CONTACTED\"\n}\n```"
+					},
+					"response": []
+				}
+			],
+			"description": "Basic lead management operations"
+		},
+		{
+			"name": "Customer Details",
+			"item": [
+				{
+					"name": "Create/Update Customer Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"alternate_phone\": \"9876543211\",\n  \"date_of_birth\": \"1990-01-15\",\n  \"gender\": \"Male\",\n  \"contact_phone\": \"9876543210\",\n  \"contact_email\": \"contact@example.com\",\n  \"present_address_line1\": \"123 Main Street\",\n  \"present_address_line2\": \"Apt 4B\",\n  \"present_city\": \"Mumbai\",\n  \"present_state\": \"Maharashtra\",\n  \"present_pincode\": \"400001\",\n  \"present_country\": \"India\",\n  \"payment_address_same_as_present\": true,\n  \"payment_address_line1\": \"123 Main Street\",\n  \"payment_address_line2\": \"Apt 4B\",\n  \"payment_city\": \"Mumbai\",\n  \"payment_state\": \"Maharashtra\",\n  \"payment_pincode\": \"400001\",\n  \"payment_country\": \"India\",\n  \"latitude\": 19.0760,\n  \"longitude\": 72.8777,\n  \"plan_id\": 1,\n  \"static_ip_required\": false,\n  \"telephone_line_required\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/:unique_id/customer-details",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								":unique_id",
+								"customer-details"
+							],
+							"variable": [
+								{
+									"key": "unique_id",
+									"value": "{{unique_id}}",
+									"description": "Lead unique identifier"
+								}
+							]
+						},
+						"description": "## Create or Update Customer Details\n\n**Authentication:** Required ✅\n\n### Description\nCreates or updates customer details for a specific lead.\n\n### Path Parameters\n- `unique_id` (required): String - The unique identifier of the lead\n\n### Request Body\n#### Required Fields\n- `first_name` (required): String - Customer first name\n\n#### Optional Fields\n- `id`: Integer - Customer details ID for update\n- `last_name`: String - Customer last name\n- `email`: String - Valid email address\n- `alternate_phone`: String - 10-15 digits\n- `date_of_birth`: String - ISO8601 date format (e.g., \"1990-01-15\")\n- `gender`: Enum - \"Male\", \"Female\", or \"Other\"\n- `contact_phone`: String - 10-15 digits\n- `contact_email`: String - Valid email address\n- `present_address_line1`: String\n- `present_address_line2`: String\n- `present_city`: String\n- `present_state`: String\n- `present_pincode`: String\n- `present_country`: String\n- `payment_address_same_as_present`: Boolean\n- `payment_address_line1`: String\n- `payment_address_line2`: String\n- `payment_city`: String\n- `payment_state`: String\n- `payment_pincode`: String\n- `payment_country`: String\n- `latitude`: Float - Between -90 and 90\n- `longitude`: Float - Between -180 and 180\n- `plan_id`: Integer - Service plan ID\n- `static_ip_required`: Boolean\n- `telephone_line_required`: Boolean"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customer Details by Lead ID",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/customer-details/:unique_id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"customer-details",
+								":unique_id"
+							],
+							"variable": [
+								{
+									"key": "unique_id",
+									"value": "{{unique_id}}",
+									"description": "Lead unique identifier"
+								}
+							]
+						},
+						"description": "## Get Customer Details by Lead ID\n\n**Authentication:** Not Required ❌\n\n### Description\nRetrieves customer details for a specific lead.\n\n### Path Parameters\n- `unique_id` (required): String - The unique identifier of the lead\n\n### Response\nReturns customer details object if found, or error if not found."
+					},
+					"response": []
+				},
+				{
+					"name": "Send Customer Details Link",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/sendCustomerDetailsFrom/:leadId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"sendCustomerDetailsFrom",
+								":leadId"
+							],
+							"variable": [
+								{
+									"key": "leadId",
+									"value": "{{leadId}}",
+									"description": "Lead ID"
+								}
+							]
+						},
+						"description": "## Send Customer Details Link\n\n**Authentication:** Required ✅\n\n### Description\nSends a customer details link to the customer for a specific lead.\n\n### Path Parameters\n- `leadId` (required): String - The lead ID\n\n### Response\nReturns success message if link is sent successfully."
+					},
+					"response": []
+				}
+			],
+			"description": "Customer details management operations"
+		},
+		{
+			"name": "GIS Status",
+			"item": [
+				{
+					"name": "Update GIS Status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"FEASIBLE\",\n  \"lead_id\": \"LEAD-2024-001\",\n  \"remark\": \"Location is feasible for installation\",\n  \"distance\": 2.5,\n  \"optical_type\": \"GPON\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/gisStatusChange",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"gisStatusChange"
+							]
+						},
+						"description": "## Update GIS Status\n\n**Authentication:** Required ✅\n\n### Description\nUpdates the GIS (Geographic Information System) status for a lead after feasibility check.\n\n### Request Body\n#### Required Fields\n- `status` (required): String - One of: FEASIBLE, NOT_FEASIBLE, INCORRECT_LOCATION\n- `lead_id` (required): String - Lead unique_id\n\n#### Optional Fields\n- `remark`: String - Additional remarks about the status\n- `distance`: Float - Distance (must be a positive number)\n- `optical_type`: String - One of: GPON, EPON, Media convertor\n\n### Valid Status Values\n- FEASIBLE\n- NOT_FEASIBLE\n- INCORRECT_LOCATION\n\n### Valid Optical Types\n- GPON\n- EPON\n- Media convertor\n\n### Example Request\n```json\n{\n  \"status\": \"FEASIBLE\",\n  \"lead_id\": \"LEAD-2024-001\",\n  \"remark\": \"Location is feasible for installation\",\n  \"distance\": 2.5,\n  \"optical_type\": \"GPON\"\n}\n```"
+					},
+					"response": []
+				}
+			],
+			"description": "GIS status management operations"
+		},
+		{
+			"name": "KYC",
+			"item": [
+				{
+					"name": "Submit KYC",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_type\": \"Aadhaar\",\n  \"id_number\": \"1234 5678 9012\",\n  \"id_document\": \"base64_encoded_document_or_url\",\n  \"address_proof_type\": \"Aadhaar\",\n  \"address_proof_document\": \"base64_encoded_document_or_url\",\n  \"address_proof_number\": \"1234 5678 9012\",\n  \"signature\": \"base64_encoded_signature_or_url\",\n  \"terms_accepted\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/:unique_id/kyc",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								":unique_id",
+								"kyc"
+							],
+							"variable": [
+								{
+									"key": "unique_id",
+									"value": "{{unique_id}}",
+									"description": "Lead unique identifier"
+								}
+							]
+						},
+						"description": "## Submit KYC\n\n**Authentication:** Not Required ❌\n\n### Description\nSubmits KYC (Know Your Customer) documents and information for a lead.\n\n### Path Parameters\n- `unique_id` (required): String - The unique identifier of the lead\n\n### Request Body\n#### Required Fields\n- `id_type` (required): String - Type of ID document (e.g., \"Aadhaar\", \"PAN\", \"Passport\")\n- `id_number` (required): String - ID document number\n- `id_document` (required): String - ID document (base64 encoded or URL)\n- `address_proof_type` (required): String - Type of address proof document\n- `address_proof_document` (required): String - Address proof document (base64 encoded or URL)\n- `signature` (required): String - Customer signature (base64 encoded or URL)\n- `terms_accepted` (required): Boolean - Must be `true`\n\n#### Optional Fields\n- `address_proof_number`: String - Address proof document number\n\n### Important Notes\n- `terms_accepted` must be `true`, otherwise the request will fail\n- Documents can be provided as base64 encoded strings or URLs\n\n### Example Request\n```json\n{\n  \"id_type\": \"Aadhaar\",\n  \"id_number\": \"1234 5678 9012\",\n  \"id_document\": \"base64_encoded_document_or_url\",\n  \"address_proof_type\": \"Aadhaar\",\n  \"address_proof_document\": \"base64_encoded_document_or_url\",\n  \"address_proof_number\": \"1234 5678 9012\",\n  \"signature\": \"base64_encoded_signature_or_url\",\n  \"terms_accepted\": true\n}\n```"
+					},
+					"response": []
+				}
+			],
+			"description": "KYC (Know Your Customer) operations"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api/v1/leads",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "unique_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "leadId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

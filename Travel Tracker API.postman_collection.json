@@ -1,0 +1,433 @@
+{
+	"info": {
+		"_postman_id": "0d1b6168-24f3-420c-a1ef-6b33554a0f3f",
+		"name": "Travel Tracker API",
+		"description": "Complete API collection for Travel Tracker System with travel record management, month-wise reports, and employee travel history.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49725847",
+		"_collection_link": "https://itechseed.postman.co/workspace/fbcef786-a0f1-4635-ad1f-035588fd05ba/collection/32688821-0d1b6168-24f3-420c-a1ef-6b33554a0f3f?action=share&source=collection_link&creator=49725847"
+	},
+	"item": [
+		{
+			"name": "Travel Records",
+			"item": [
+				{
+					"name": "Create or Update Travel Record",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsImlhdCI6MTc2MjU0MjYwMCwiZXhwIjoxNzYzMTQ3NDAwfQ.uhEm_HvPEUAptfXl09WTWZ5bgU6MyFfj3Iuw-T8alJs"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"date\": \"2025-11-08\",\n    \"distance_km\": 7.5,\n    \"vehicle_type\": \"OWN_VEHICLE\",\n    \"started_at\": \"2025-11-08T04:30:00.000Z\",\n    \"ended_at\": \"2025-11-08T05:05:00.000Z\",\n    \"route\": {\n      \"vehicle\": {\n        \"name\": \"Honda Activa\",\n        \"number\": \"MH12 XY 5678\",\n        \"type\": \"BIKE\"\n      },\n      \"stops\": [\n        {\n          \"name\": \"Office\",\n          \"address\": \"Bibwewadi, Pune\",\n          \"start_time\": \"2025-11-08T04:30:00.000Z\",\n          \"position\": { \"lat\": 18.4736, \"lng\": 73.8684 }\n        },\n        {\n          \"name\": \"Client Visit\",\n          \"address\": \"Market Yard, Pune\",\n          \"start_time\": \"2025-11-08T04:45:00.000Z\",\n          \"end_time\": \"2025-11-08T05:05:00.000Z\",\n          \"position\": { \"lat\": 18.5016, \"lng\": 73.8741 }\n        }\n      ],\n      \"path\": [\n        { \"lat\": 18.4736, \"lng\": 73.8684 },\n        { \"lat\": 18.4832, \"lng\": 73.8699 },\n        { \"lat\": 18.4937, \"lng\": 73.8724 },\n        { \"lat\": 18.5016, \"lng\": 73.8741 }\n      ]\n    }\n  }"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/travelTracker",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"travelTracker"
+							]
+						},
+						"description": "Add or update the authenticated executive's travel record for a specific date. Payout is automatically calculated at ₹3 per km when travelling in your own vehicle.\n\n**Auth:** Bearer token required. `user_id` is derived from the token.\n\n**Required fields:**\n- date (YYYY-MM-DD)\n- distance_km (float ≥ 0)\n- vehicle_type (Own vehicle | Colleague | Company vehicle)\n\n**Optional fields:**\n- route (string or JSON object describing the journey)\n- started_at / ended_at (ISO datetime strings)\n- auto_ended (boolean flag set when system ends the trip automatically)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Travel Record - Bike",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"date\": \"2025-01-15\",\n  \"distance_km\": 22.7,\n  \"vehicle_type\": \"Own vehicle\",\n  \"route\": \"Office to Client Site\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/travelTracker",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"travelTracker"
+							]
+						},
+						"description": "Example: Add bike travel record"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Travel Record - Car",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"date\": \"2025-01-16\",\n  \"distance_km\": 38.4,\n  \"vehicle_type\": \"Colleague\",\n  \"route\": \"Client visits with teammate\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/travelTracker",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"travelTracker"
+							]
+						},
+						"description": "Example: Add car travel record"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Travel Record - Bus",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"date\": \"2025-01-17\",\n  \"distance_km\": 52.0,\n  \"vehicle_type\": \"Company vehicle\",\n  \"route\": \"Intercity travel for training\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/travelTracker",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"travelTracker"
+							]
+						},
+						"description": "Example: Add bus travel record"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Travel Records",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/travelTracker",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"travelTracker"
+							]
+						},
+						"description": "Get all travel records with user information. Returns records ordered by date (newest first)."
+					},
+					"response": []
+				}
+			],
+			"description": "Create and retrieve travel records"
+		},
+		{
+			"name": "Reports & Analytics",
+			"item": [
+				{
+					"name": "Get Monthly Travel Records",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsImlhdCI6MTc2MjU0MjYwMCwiZXhwIjoxNzYzMTQ3NDAwfQ.uhEm_HvPEUAptfXl09WTWZ5bgU6MyFfj3Iuw-T8alJs"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/travelTracker/monthwise?month=1&year=2025&user_id=23",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"travelTracker",
+								"monthwise"
+							],
+							"query": [
+								{
+									"key": "month",
+									"value": "1",
+									"description": "Month (1-12)"
+								},
+								{
+									"key": "year",
+									"value": "2025",
+									"description": "Year (YYYY)"
+								},
+								{
+									"key": "Authorization",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsImlhdCI6MTc2MjU0MjYwMCwiZXhwIjoxNzYzMTQ3NDAwfQ.uhEm_HvPEUAptfXl09WTWZ5bgU6MyFfj3Iuw-T8alJs",
+									"disabled": true
+								},
+								{
+									"key": "user_id",
+									"value": "23"
+								}
+							]
+						},
+						"description": "Get travel records for a specific month and year. Both query parameters are required.\n\n**Response:**\n- `records`: Array of day-wise travel entries (including route, start/end, payout)\n- `summary`: Aggregated totals with `totalDistance`, `eligibleDistance`, `totalPayout`, and `ratePerKm`\n\n**Optional query:** `user_id` (filter results to a specific executive when used by admins)."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Monthly Travel - January 2025",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/travelTracker/monthwise?month=1&year=2025",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"travelTracker",
+								"monthwise"
+							],
+							"query": [
+								{
+									"key": "month",
+									"value": "1"
+								},
+								{
+									"key": "year",
+									"value": "2025"
+								}
+							]
+						},
+						"description": "Example: Get all travel records for January 2025"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Monthly Travel - December 2024",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/travelTracker/monthwise?month=12&year=2024",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"travelTracker",
+								"monthwise"
+							],
+							"query": [
+								{
+									"key": "month",
+									"value": "12"
+								},
+								{
+									"key": "year",
+									"value": "2024"
+								}
+							]
+						},
+						"description": "Example: Get all travel records for December 2024"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Executives",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/travelTracker/executives",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"travelTracker",
+								"executives"
+							]
+						},
+						"description": "Get all distinct users/executives who have travel records. Returns users with their basic information (id, name, email, role)."
+					},
+					"response": []
+				}
+			],
+			"description": "Reports and analytics endpoints for travel tracking"
+		},
+		{
+			"name": "Employee Travel History",
+			"item": [
+				{
+					"name": "Get Employee Travel History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsImlhdCI6MTc2MjU0MjYwMCwiZXhwIjoxNzYzMTQ3NDAwfQ.uhEm_HvPEUAptfXl09WTWZ5bgU6MyFfj3Iuw-T8alJs"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/travelTracker/employee/:user_id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"travelTracker",
+								"employee",
+								":user_id"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "{{userId}}",
+									"description": "User ID (integer)"
+								}
+							]
+						},
+						"description": "Get travel history for a specific employee/user. Returns all travel records for the specified user_id, ordered by date (newest first)."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employee Travel History - User ID 1",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/travelTracker/employee/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"travelTracker",
+								"employee",
+								"1"
+							]
+						},
+						"description": "Example: Get travel history for user ID 1"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employee Travel History - User ID 2",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/travelTracker/employee/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"travelTracker",
+								"employee",
+								"2"
+							]
+						},
+						"description": "Example: Get travel history for user ID 2"
+					},
+					"response": []
+				}
+			],
+			"description": "Employee-specific travel history endpoints"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsImlhdCI6MTc2MjU0MjYwMCwiZXhwIjoxNzYzMTQ3NDAwfQ.uhEm_HvPEUAptfXl09WTWZ5bgU6MyFfj3Iuw-T8alJs",
+			"type": "string"
+		}
+	]
+}

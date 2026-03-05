@@ -1,0 +1,561 @@
+{
+	"info": {
+		"_postman_id": "b2e918eb-d772-4b32-9fdb-2bca8a93e176",
+		"name": "Inventory Management API",
+		"description": "Complete API collection for Inventory/Asset Management System with CRUD operations for assets, companies, and asset types.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49725847",
+		"_collection_link": "https://itechseed.postman.co/workspace/fbcef786-a0f1-4635-ad1f-035588fd05ba/collection/32688821-b2e918eb-d772-4b32-9fdb-2bca8a93e176?action=share&source=collection_link&creator=49725847"
+	},
+	"item": [
+		{
+			"name": "Asset Management",
+			"item": [
+				{
+					"name": "Add Stock",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"company\": \"EXPL\",\n  \"assetType\": \"Banner\",\n  \"batchQty\": 100,\n  \"threshold\": 30,\n  \"orgId\": \"{{orgId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/inventory/add-stock",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"add-stock"
+							]
+						},
+						"description": "Add new stock to inventory. Creates new asset or updates existing one if asset with same type and company exists."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Assets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/inventory/assets?page=1&limit=50&search=&assetType=&company=&orgId={{orgId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"assets"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number"
+								},
+								{
+									"key": "limit",
+									"value": "50",
+									"description": "Items per page"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search in asset_type and company"
+								},
+								{
+									"key": "assetType",
+									"value": "",
+									"description": "Filter by asset type"
+								},
+								{
+									"key": "company",
+									"value": "",
+									"description": "Filter by company"
+								},
+								{
+									"key": "orgId",
+									"value": "{{orgId}}",
+									"description": "Organization ID"
+								},
+								{
+									"key": "showInactive",
+									"value": "false",
+									"description": "Include inactive assets",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get all assets with filtering, searching, and pagination. Returns assets grouped by type and summary statistics."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Assets - Search Banner",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/inventory/assets?search=Board",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"assets"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "Board"
+								}
+							]
+						},
+						"description": "Example: Search for assets containing 'Banner'"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Assets - Filter by Company",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/inventory/assets?company=EXPL",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"assets"
+							],
+							"query": [
+								{
+									"key": "company",
+									"value": "EXPL"
+								}
+							]
+						},
+						"description": "Example: Get all assets from EXPL company"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Assets - Filter by Asset Type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/inventory/assets?assetType=Flyer",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"assets"
+							],
+							"query": [
+								{
+									"key": "assetType",
+									"value": "Flyer"
+								}
+							]
+						},
+						"description": "Example: Get all Flyer assets"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Asset",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/inventory/assets/:assetId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"assets",
+								":assetId"
+							],
+							"variable": [
+								{
+									"key": "assetId",
+									"value": "{{assetId}}",
+									"description": "Asset UUID"
+								}
+							]
+						},
+						"description": "Get a single asset by its UUID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Asset - Edit Details",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"assetType\": \"Banner\",\n  \"company\": \"EXPL\",\n  \"threshold\": 40\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/inventory/assets/:assetId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"assets",
+								":assetId"
+							],
+							"variable": [
+								{
+									"key": "assetId",
+									"value": "{{assetId}}",
+									"description": "Asset UUID"
+								}
+							]
+						},
+						"description": "Update asset details like asset type, company, or threshold"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Asset - Distribute Stock (Add to Out)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"addToOut\": 20\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/inventory/assets/:assetId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"assets",
+								":assetId"
+							],
+							"variable": [
+								{
+									"key": "assetId",
+									"value": "{{assetId}}",
+									"description": "Asset UUID"
+								}
+							]
+						},
+						"description": "Distribute assets - adds specified quantity to total_out and recalculates balance"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Asset - Set Exact Totals",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"totalIn\": 150,\n  \"totalOut\": 50\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/inventory/assets/:assetId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"assets",
+								":assetId"
+							],
+							"variable": [
+								{
+									"key": "assetId",
+									"value": "{{assetId}}",
+									"description": "Asset UUID"
+								}
+							]
+						},
+						"description": "Set exact values for total_in and total_out. Balance will be auto-calculated."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Asset",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/inventory/assets/:assetId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"assets",
+								":assetId"
+							],
+							"variable": [
+								{
+									"key": "assetId",
+									"value": "{{assetId}}",
+									"description": "Asset UUID"
+								}
+							]
+						},
+						"description": "Soft delete an asset (sets is_active to false)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Low Stock Assets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/inventory/low-stock",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"low-stock"
+							]
+						},
+						"description": "Get all assets where balance <= threshold (low stock alerts)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Dashboard Statistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/inventory/dashboard?orgId={{orgId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"dashboard"
+							],
+							"query": [
+								{
+									"key": "orgId",
+									"value": "{{orgId}}",
+									"description": "Organization ID (optional)"
+								}
+							]
+						},
+						"description": "Get comprehensive dashboard statistics including summaries, groupings by type/company, and low stock alerts"
+					},
+					"response": []
+				}
+			],
+			"description": "All asset/inventory management endpoints including CRUD operations and analytics"
+		},
+		{
+			"name": "Company Management",
+			"item": [
+				{
+					"name": "Get All Companies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/inventory/companies?orgId={{orgId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"companies"
+							],
+							"query": [
+								{
+									"key": "orgId",
+									"value": "{{orgId}}",
+									"description": "Organization ID (optional)"
+								}
+							]
+						},
+						"description": "Get all active companies for dropdown/selection"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Company",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"companyCode\": \"EXPL\",\n  \"companyName\": \"Example Ltd.\",\n  \"orgId\": \"{{orgId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/inventory/companies",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"companies"
+							]
+						},
+						"description": "Add a new company to the system (Admin only)"
+					},
+					"response": []
+				}
+			],
+			"description": "Company master data management"
+		},
+		{
+			"name": "Asset Type Management",
+			"item": [
+				{
+					"name": "Get All Asset Types",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/inventory/asset-types?orgId={{orgId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"asset-types"
+							],
+							"query": [
+								{
+									"key": "orgId",
+									"value": "{{orgId}}",
+									"description": "Organization ID (optional)"
+								}
+							]
+						},
+						"description": "Get all active asset types for dropdown/selection"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Asset Type",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"typeName\": \"Cap\",\n  \"typeCode\": \"CAP\",\n  \"description\": \"Marketing flyer for events and promotions\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/inventory/asset-types",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"inventory",
+								"asset-types"
+							]
+						},
+						"description": "Add a new asset type to the system (Admin only)"
+					},
+					"response": []
+				}
+			],
+			"description": "Asset type master data management"
+		},
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/inventory/health",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"inventory",
+						"health"
+					]
+				},
+				"description": "Check if inventory routes are working"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "orgId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "assetId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

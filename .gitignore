@@ -1,0 +1,9 @@
+build/
+.dart_tool/
+.pub/
+.idea/
+.vscode/
+android/.gradle/
+android/app/build/
+ios/Pods/
+*.apk
